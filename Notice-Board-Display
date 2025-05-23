@@ -1,0 +1,30 @@
+from rgbmatrix import RGBMatrix, RGBMatrixOptions
+from rgbmatrix import graphics
+import time
+
+# Setup display options
+options = RGBMatrixOptions()
+options.rows = 16
+options.cols = 32  # Update to 64 if using larger display
+options.chain_length = 1
+options.parallel = 1
+options.hardware_mapping = 'regular'  # use 'adafruit-hat' if you're using a HAT
+
+matrix = RGBMatrix(options=options)
+
+canvas = matrix.CreateFrameCanvas()
+font = graphics.Font()
+font.LoadFont("rpi-rgb-led-matrix/fonts/6x10.bdf")  # Use included fonts
+textColor = graphics.Color(255, 0, 0)  # Red text
+
+# Message to scroll
+message = "  Welcome to EEE  "
+pos = canvas.width
+
+while True:
+    canvas.Clear()
+    text_length = graphics.DrawText(canvas, font, pos, 10, textColor, message)
+    pos -= 1
+    if (pos + text_length < 0):
+        pos = canvas.width
+    time.sleep(0.05)
